@@ -1,5 +1,4 @@
 package ai.chatbot.dto;
 
-public class ChatRequest {
-    public String prompt;
+public record ChatRequest(String prompt) {
 }

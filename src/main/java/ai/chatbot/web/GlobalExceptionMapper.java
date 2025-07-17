@@ -1,0 +1,32 @@
+package ai.chatbot.web;
+
+import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.ext.ExceptionMapper;
+import jakarta.ws.rs.ext.Provider;
+
+@Provider
+public class GlobalExceptionMapper implements ExceptionMapper<Exception> {
+    @Override
+    public Response toResponse(Exception e) {
+        return resolveError(e);
+    }
+
+    private Response resolveError(Exception e) {
+        if(e instanceof BadRequestException) {
+            return buildResponse(Response.Status.BAD_REQUEST, e.getMessage());
+        } else {
+            return buildResponse(Response.Status.INTERNAL_SERVER_ERROR, "Internal error: " + e.getMessage());
+        }
+    }
+
+    private Response buildResponse(Response.Status status, String error) {
+        return Response.status(status)
+                .entity(new ErrorDTO(error))
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+    }
+
+    public record ErrorDTO(String error) {}
+}

@@ -3,6 +3,7 @@ package ai.chatbot.service;
 import ai.chatbot.client.OllamaClient;
 import ai.chatbot.dto.*;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.BadRequestException;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
@@ -26,17 +27,20 @@ public class ChatService {
         LOG.debugf("Generating response using model: %s", model);
         LOG.debugf("Prompt: %s", request.prompt());
 
-        List<String> modelNames = ollamaClient.getAvailableModels().models().stream()
+        List<String> installedModels = ollamaClient.getAvailableModels().models().stream()
                 .map(OllamaModelTag::name)
                 .toList();
 
-        LOG.debugf("Model Names: %s", modelNames);
+        LOG.debugf("Model Names: %s", installedModels);
 
-        boolean found = modelNames.stream()
+        boolean found = installedModels.stream()
                 .anyMatch(t -> t.trim().equalsIgnoreCase(model) || t.trim().split(":")[0].equalsIgnoreCase(model));
 
         if (!found) {
-            throw new IllegalStateException("Model '" + model + "' is not installed in Ollama");
+            throw new BadRequestException(
+                    "Modello '" + model + "' non disponibile. Modelli installati: " +
+                            String.join(", ", installedModels)
+            );
         }
 
         OllamaRequest ollamaRequest = new OllamaRequest(model, request.prompt(), false);

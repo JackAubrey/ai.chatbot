@@ -14,15 +14,18 @@ public class ChatServiceFactoryProvider {
 
     final OllamaClient ollamaClient;
     final String model;
+    final String baseUrl;
     final String provider;
 
 
     public ChatServiceFactoryProvider(
             @RestClient OllamaClient ollamaClient,
             @ConfigProperty(name = "ollama.model", defaultValue = "llama3") String model,
+            @ConfigProperty(name = "ollama.base-url", defaultValue = "http://localhost:11434") String baseUrl,
             @ConfigProperty(name = "chat.provider", defaultValue = "default") String provider) {
         this.ollamaClient = ollamaClient;
         this.model = model;
+        this.baseUrl = baseUrl;
         this.provider = provider;
     }
 
@@ -33,6 +36,7 @@ public class ChatServiceFactoryProvider {
 
         ChatService cs =  switch (providerEnum) {
             case OLLAMA -> new OllamaChatService(ollamaClient, model);
+            case LANGCHAIN_LOCAL -> new LangChainLocalChatService(model, baseUrl);
             default -> {
                 LOG.warn("Provider non riconosciuto. Uso DefaultChatService.");
                 yield new DefaultChatService();

@@ -1,4 +1,4 @@
-package ai.chatbot.dto;
+package ai.chatbot.dto.ollama;
 
 import java.util.List;
 

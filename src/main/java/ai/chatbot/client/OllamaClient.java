@@ -1,9 +1,10 @@
 package ai.chatbot.client;
 
-import ai.chatbot.dto.OllamaRequest;
-import ai.chatbot.dto.OllamaResponse;
-import ai.chatbot.dto.OllamaTagsResponse;
+import ai.chatbot.dto.ollama.OllamaRequest;
+import ai.chatbot.dto.ollama.OllamaResponse;
+import ai.chatbot.dto.ollama.OllamaTagsResponse;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 /**
@@ -22,8 +23,8 @@ public interface OllamaClient {
      */
     @POST
     @Path("/generate")
-    @Produces("application/json")
-    @Consumes("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     OllamaResponse generate(OllamaRequest request);
 
     /**

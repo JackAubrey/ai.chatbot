@@ -1,4 +1,4 @@
-package ai.chatbot.dto;
+package ai.chatbot.dto.ollama;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

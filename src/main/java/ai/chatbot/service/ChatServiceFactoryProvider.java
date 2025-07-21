@@ -1,9 +1,10 @@
 package ai.chatbot.service;
 
+import ai.chatbot.client.LlamaStackApiClient;
 import ai.chatbot.client.OllamaClient;
+import ai.chatbot.conf.ChatConfig;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import org.jboss.logging.Logger;
@@ -13,37 +14,35 @@ public class ChatServiceFactoryProvider {
     private static final Logger LOG = Logger.getLogger(ChatServiceFactoryProvider.class);
 
     final OllamaClient ollamaClient;
-    final String model;
-    final String baseUrl;
-    final String provider;
+    final LlamaStackApiClient llamaStackApiClient;
+    final ChatConfig chatConfig;
 
 
     public ChatServiceFactoryProvider(
             @RestClient OllamaClient ollamaClient,
-            @ConfigProperty(name = "ollama.model", defaultValue = "llama3") String model,
-            @ConfigProperty(name = "ollama.base-url", defaultValue = "http://localhost:11434") String baseUrl,
-            @ConfigProperty(name = "chat.provider", defaultValue = "default") String provider) {
+            @RestClient LlamaStackApiClient llamaStackApiClient,
+            ChatConfig chatConfig) {
         this.ollamaClient = ollamaClient;
-        this.model = model;
-        this.baseUrl = baseUrl;
-        this.provider = provider;
+        this.llamaStackApiClient = llamaStackApiClient;
+        this.chatConfig = chatConfig;
     }
 
     @Produces
     @ApplicationScoped
     public ChatService produceChatService() {
-        ChatProvider providerEnum = ChatProvider.from(provider);
+        ChatProvider providerEnum = ChatProvider.from(chatConfig.provider());
 
         ChatService cs =  switch (providerEnum) {
-            case OLLAMA -> new OllamaChatService(ollamaClient, model);
-            case LANGCHAIN_LOCAL -> new LangChainLocalChatService(model, baseUrl);
+            case OLLAMA -> new OllamaChatService(ollamaClient, chatConfig.model());
+            case LANGCHAIN_LOCAL -> new LangChainLocalChatService(chatConfig.model(), chatConfig.ollama().baseUrl());
+            case LLAMASTACK_LOCAL -> new LlamaStackChatService(llamaStackApiClient, chatConfig.model());
             default -> {
                 LOG.warn("Provider non riconosciuto. Uso DefaultChatService.");
                 yield new DefaultChatService();
             }
         };
 
-        LOG.debugf("Inizializzazione ChatService con provider: %s - %s", provider, cs.getClass().getName());
+        LOG.debugf("Inizializzazione ChatService con provider: %s - %s", chatConfig.provider(), cs.getClass().getName());
         return cs;
     }
 

@@ -1,4 +1,4 @@
-package ai.chatbot.dto;
+package ai.chatbot.dto.ollama;
 
 public record OllamaModelTag(String name) {
 }

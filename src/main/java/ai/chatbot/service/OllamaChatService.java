@@ -2,6 +2,9 @@ package ai.chatbot.service;
 
 import ai.chatbot.client.OllamaClient;
 import ai.chatbot.dto.*;
+import ai.chatbot.dto.ollama.OllamaModelTag;
+import ai.chatbot.dto.ollama.OllamaRequest;
+import ai.chatbot.dto.ollama.OllamaResponse;
 import ai.chatbot.exception.ConfigurationException;
 import org.jboss.logging.Logger;
 

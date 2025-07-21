@@ -1,6 +1,7 @@
 package ai.chatbot.service;
 
 import ai.chatbot.client.OllamaClient;
+import ai.chatbot.service.ai.prompting.AiChatModel;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -13,19 +14,22 @@ public class ChatServiceFactoryProvider {
     private static final Logger LOG = Logger.getLogger(ChatServiceFactoryProvider.class);
 
     final OllamaClient ollamaClient;
+    final AiChatModel chatModel;
+    final LangChainLocalRouterModel routerModel;
     final String model;
-    final String baseUrl;
     final String provider;
 
 
     public ChatServiceFactoryProvider(
             @RestClient OllamaClient ollamaClient,
+            AiChatModel chatModel,
+            LangChainLocalRouterModel routerModel,
             @ConfigProperty(name = "ollama.model", defaultValue = "llama3") String model,
-            @ConfigProperty(name = "ollama.base-url", defaultValue = "http://localhost:11434") String baseUrl,
             @ConfigProperty(name = "chat.provider", defaultValue = "default") String provider) {
         this.ollamaClient = ollamaClient;
+        this.chatModel = chatModel;
+        this.routerModel = routerModel;
         this.model = model;
-        this.baseUrl = baseUrl;
         this.provider = provider;
     }
 
@@ -36,7 +40,8 @@ public class ChatServiceFactoryProvider {
 
         ChatService cs =  switch (providerEnum) {
             case OLLAMA -> new OllamaChatService(ollamaClient, model);
-            case LANGCHAIN_LOCAL -> new LangChainLocalChatService(model, baseUrl);
+            case LANGCHAIN_LOCAL -> new LangChainLocalChatService(chatModel);
+            case PROMPT_ROUTING_LANGCHAIN_LOCAL -> new LangChainLocalRouterService(routerModel);
             default -> {
                 LOG.warn("Provider non riconosciuto. Uso DefaultChatService.");
                 yield new DefaultChatService();

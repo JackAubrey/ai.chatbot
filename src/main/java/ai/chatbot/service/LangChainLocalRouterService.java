@@ -22,7 +22,8 @@ class LangChainLocalRouterService implements ChatService {
 
     @Override
     public ChatResponse chat(ChatRequest request) {
-        String label = routerModel.getDispatcher().classifica(request.prompt()).trim().toUpperCase();
+        String label = routerModel.getDispatcher().classifica(request.prompt()).trim().toUpperCase()
+                .replaceAll("[^A-Z_]", ""); // rimuove caratteri non alfabetici o underscore
         LOG.debugf("Router Label Classification: %s", label);
         return switch (label) {
             case "TRADUZIONE" -> {

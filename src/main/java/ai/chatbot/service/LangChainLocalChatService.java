@@ -2,16 +2,16 @@ package ai.chatbot.service;
 
 import ai.chatbot.dto.ChatRequest;
 import ai.chatbot.dto.ChatResponse;
-import ai.chatbot.service.ai.prompting.AiChatModel;
+import ai.chatbot.service.ai.prompting.inline.AssistantAiService;
 import org.jboss.logging.Logger;
 
 class LangChainLocalChatService implements ChatService {
 
     private static final Logger LOG = Logger.getLogger(LangChainLocalChatService.class);
 
-    private final AiChatModel chatModel;
+    private final AssistantAiService chatModel;
 
-    public LangChainLocalChatService(AiChatModel chatModel) {
+    public LangChainLocalChatService(AssistantAiService chatModel) {
         this.chatModel = chatModel;
     }
 

@@ -1,4 +1,4 @@
-package ai.chatbot.service.ai.prompting;
+package ai.chatbot.service.ai.prompting.inline;
 
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;

@@ -1,22 +1,19 @@
 package ai.chatbot.service;
 
 
-import ai.chatbot.service.ai.prompting.AssistantAiService;
-import ai.chatbot.service.ai.prompting.ComedianAiService;
-import ai.chatbot.service.ai.prompting.JavaDevAiService;
-import ai.chatbot.service.ai.prompting.TranslatorAiService;
+import ai.chatbot.service.ai.prompting.inline.*;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class LangChainLocalRouterModel {
-    private final LangChainRouterDispatcherService dispatcher;
+    private final RouterDispatcherAiService dispatcher;
     private final AssistantAiService generale;
     private final TranslatorAiService traduttore;
     private final JavaDevAiService javaDev;
     private final ComedianAiService comico;
 
     public LangChainLocalRouterModel(
-            LangChainRouterDispatcherService dispatcher,
+            RouterDispatcherAiService dispatcher,
             AssistantAiService generale,
             TranslatorAiService traduttore,
             JavaDevAiService javaDev,
@@ -29,7 +26,7 @@ public class LangChainLocalRouterModel {
         this.comico = comico;
     }
 
-    public LangChainRouterDispatcherService getDispatcher() {
+    public RouterDispatcherAiService getDispatcher() {
         return dispatcher;
     }
 

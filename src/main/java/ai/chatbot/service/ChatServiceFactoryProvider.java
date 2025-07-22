@@ -1,7 +1,7 @@
 package ai.chatbot.service;
 
 import ai.chatbot.client.OllamaClient;
-import ai.chatbot.service.ai.prompting.AiChatModel;
+import ai.chatbot.service.ai.prompting.inline.AssistantAiService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -14,7 +14,7 @@ public class ChatServiceFactoryProvider {
     private static final Logger LOG = Logger.getLogger(ChatServiceFactoryProvider.class);
 
     final OllamaClient ollamaClient;
-    final AiChatModel chatModel;
+    final AssistantAiService chatModel;
     final LangChainLocalRouterModel routerModel;
     final String model;
     final String provider;
@@ -22,7 +22,7 @@ public class ChatServiceFactoryProvider {
 
     public ChatServiceFactoryProvider(
             @RestClient OllamaClient ollamaClient,
-            AiChatModel chatModel,
+            AssistantAiService chatModel,
             LangChainLocalRouterModel routerModel,
             @ConfigProperty(name = "ollama.model", defaultValue = "llama3") String model,
             @ConfigProperty(name = "chat.provider", defaultValue = "default") String provider) {

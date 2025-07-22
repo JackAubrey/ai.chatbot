@@ -1,4 +1,4 @@
-package ai.chatbot.service;
+package ai.chatbot.service.ai.prompting.inline;
 
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
@@ -18,7 +18,7 @@ import io.quarkiverse.langchain4j.RegisterAiService;
  *
  */
 @RegisterAiService
-public interface LangChainRouterDispatcherService {
+public interface RouterDispatcherAiService {
     @SystemMessage("""
         Il tuo compito è classificare la richiesta dell'utente in una delle seguenti categorie:
 

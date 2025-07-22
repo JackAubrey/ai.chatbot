@@ -40,7 +40,7 @@ class LangChainLocalRouterService implements ChatService {
             }
             default -> {
                 LOG.debug("going to produce a generic response");
-                yield new ChatResponse(routerModel.getGenerale().rispondi(request.prompt()));
+                yield new ChatResponse(routerModel.getGenerale().chat(request.prompt()));
             }
         };
     }

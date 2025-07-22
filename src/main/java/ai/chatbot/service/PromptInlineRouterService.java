@@ -9,13 +9,13 @@ import org.jboss.logging.Logger;
  * Questo pattern non ha un nome “canonico” ma può essere considerato un Prompt Routing Strategy,
  * una forma di semantic dispatching o anche una Multi-Agent Coordination Strategy se esteso
  */
-class LangChainLocalRouterService implements ChatService {
-    private static final Logger LOG = Logger.getLogger(LangChainLocalRouterService.class);
+class PromptInlineRouterService implements ChatService {
+    private static final Logger LOG = Logger.getLogger(PromptInlineRouterService.class);
 
-    private final LangChainLocalRouterModel routerModel;
+    private final PromptInlineRouterModel routerModel;
 
-    public LangChainLocalRouterService(
-            LangChainLocalRouterModel routerModel
+    public PromptInlineRouterService(
+            PromptInlineRouterModel routerModel
     ) {
         this.routerModel = routerModel;
     }

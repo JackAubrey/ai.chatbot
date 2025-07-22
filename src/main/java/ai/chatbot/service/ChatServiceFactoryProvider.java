@@ -41,7 +41,7 @@ public class ChatServiceFactoryProvider {
         ChatService cs =  switch (providerEnum) {
             case OLLAMA -> new OllamaChatService(ollamaClient, model);
             case LANGCHAIN_LOCAL -> new LangChainLocalChatService(chatModel);
-            case PROMPT_ROUTING_LANGCHAIN_LOCAL -> new LangChainLocalRouterService(routerModel);
+            case PROMPT_ROUTING_INLINE -> new LangChainLocalRouterService(routerModel);
             default -> {
                 LOG.warn("Provider non riconosciuto. Uso DefaultChatService.");
                 yield new DefaultChatService();

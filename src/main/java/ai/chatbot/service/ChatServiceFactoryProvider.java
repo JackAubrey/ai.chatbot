@@ -15,7 +15,7 @@ public class ChatServiceFactoryProvider {
 
     final OllamaClient ollamaClient;
     final AssistantAiService chatModel;
-    final LangChainLocalRouterModel routerModel;
+    final PromptInlineRouterModel routerModel;
     final String model;
     final String provider;
 
@@ -23,7 +23,7 @@ public class ChatServiceFactoryProvider {
     public ChatServiceFactoryProvider(
             @RestClient OllamaClient ollamaClient,
             AssistantAiService chatModel,
-            LangChainLocalRouterModel routerModel,
+            PromptInlineRouterModel routerModel,
             @ConfigProperty(name = "ollama.model", defaultValue = "llama3") String model,
             @ConfigProperty(name = "chat.provider", defaultValue = "default") String provider) {
         this.ollamaClient = ollamaClient;
@@ -41,7 +41,7 @@ public class ChatServiceFactoryProvider {
         ChatService cs =  switch (providerEnum) {
             case OLLAMA -> new OllamaChatService(ollamaClient, model);
             case LANGCHAIN_LOCAL -> new LangChainLocalChatService(chatModel);
-            case PROMPT_ROUTING_LANGCHAIN_LOCAL -> new LangChainLocalRouterService(routerModel);
+            case PROMPT_INLINE_ROUTING -> new PromptInlineRouterService(routerModel);
             default -> {
                 LOG.warn("Provider non riconosciuto. Uso DefaultChatService.");
                 yield new DefaultChatService();

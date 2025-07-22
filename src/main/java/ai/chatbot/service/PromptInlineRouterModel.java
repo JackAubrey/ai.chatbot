@@ -5,14 +5,14 @@ import ai.chatbot.service.ai.prompting.inline.*;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class LangChainLocalRouterModel {
+public class PromptInlineRouterModel {
     private final RouterDispatcherAiService dispatcher;
     private final AssistantAiService generale;
     private final TranslatorAiService traduttore;
     private final JavaDevAiService javaDev;
     private final ComedianAiService comico;
 
-    public LangChainLocalRouterModel(
+    public PromptInlineRouterModel(
             RouterDispatcherAiService dispatcher,
             AssistantAiService generale,
             TranslatorAiService traduttore,
